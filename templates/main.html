@@ -1,0 +1,781 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <title>ThingSpeak Data Display</title>
+</head>
+
+<body>
+    <p id="temperatureValue"></p>
+    <p id="diagnosedDiseases"></p>
+    <br>
+    <br>
+    <h1>Temperature dataset</h1>
+    <p id="temperatureList"></p>
+
+    <script>
+        var totalCollections = 0;
+        var diseaseFrequency = {};
+        array = [];
+        var m = 0;
+        // function generateRandomTemperature() {
+        //     return (Math.random() * 5.4) + 98.6;
+        // }
+        // var temperatures = [];
+        // for (var i = 0; i < 50; i++) {
+        //     var temperature = generateRandomTemperature();
+        //     temperature = Math.round(temperature * 10) / 10;
+        //     temperatures.push(temperature);
+        // }
+        // document.getElementById("temperatureList").textContent = "Temperatures: " + temperatures.join(", ");  
+        function fetchData() {
+            var channelID = '2267841';
+            var url = `https://api.thingspeak.com/channels/${channelID}/fields/1/last.json`;
+
+        }
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Check if the value is defined and not null
+                if (data.field1 !== undefined && data.field1 !== null) {
+                    // Extract the latest value from the response
+                    var temperature = parseFloat(data.field1);
+
+                    // Display the temperature on the webpage
+                    document.getElementById("temperatureValue").textContent = `Temperature: ${temperature}°C`;
+
+                    // Check the temperature range and diagnose diseases
+                    var result_set = new Set();
+                    temperature = temperature * 1.8 + 32;
+                    if (103 < temperature <= 107.5) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Laryngomalacia");
+                        result_set.add("Cystic Fibrosis");
+                    }
+                    else if (101.1 < temperature <= 103) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Epiglottitis");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (101 < temperature <= 101.1) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Epiglottitis");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (100.4 < temperature <= 101) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (99.6 < temperature <= 100.4) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                    }
+                    else if (99.4 < temperature <= 99.6) {
+                        result_set.add("COPD");
+                    }
+                    else if (97.4 < temperature <= 99.4) {
+                        print("Our Patient seems quite healthy");
+                    }
+                    else if (93 < temperature <= 97.4) {
+                        result_set.add("Heart Disease");
+                    }
+                    else {
+                        print("Make sure that the person is breathing.");
+                    }
+
+                    // Update disease frequency
+                    result_set.forEach(function (disease) {
+                        diseaseFrequency[disease] = (diseaseFrequency[disease] || 0) + 1;
+                    });
+
+                    totalCollections++;
+
+                    // Display the diagnosed diseases on the webpage
+                    document.getElementById("diagnosedDiseases").textContent = "Diagnosed Diseases: " + Array.from(result_set).join(", ");
+
+                    // After 100 collections, display disease frequency and topmost disease
+                    if (totalCollections > 5) {
+                        displayDiseaseFrequency();
+                    }
+                } else {
+                    // Display an error message if temperature data is unavailable
+                    document.getElementById("temperatureValue").textContent = "Temperature data unavailable";
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+        function displayDiseaseFrequency() {
+            var sortedFrequency = Object.entries(diseaseFrequency).sort((a, b) => b[1] - a[1]);
+            var topDisease = sortedFrequency[0][0];
+            var output = `Topmost Disease: ${topDisease}<br> Disease Frequency:<br>`;
+            sortedFrequency.forEach(([disease, count]) => {
+                output += `${disease}: ${count}<br>`;
+            });
+            document.getElementById("diagnosedDiseases").innerHTML = output;
+        }
+
+        // Fetch data initially when the page loads
+        fetchData();
+
+        // Fetch data every 5 seconds
+        setInterval(fetchData, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+</body>
+
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <title>ThingSpeak Data Display</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #FF5733, #005AA7);
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 45px;
+        }
+
+        #container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            height: 40px;
+        }
+
+        p {
+            color: #333;
+        }
+        table {
+            width: 50%;
+            margin: 0 auto; /* Center the table */
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Classification of disease on the basis of Body Temperature</h1>
+    <div >
+        <center><h2 style="font-size: 40px;">Disease Classification</h2></center>
+        <table>
+            <tr>
+                <th>Disease</th>
+                <th>Temperature Range (°F)</th>
+            </tr>
+            <tr>
+                <td>Bronchitis</td>
+                <td>101.1 - 103.0</td>
+            </tr>
+            <tr>
+                <td>COPD</td>
+                <td>99.4 - 103.0</td>
+            </tr>
+            <tr>
+                <td>Pneumonia</td>
+                <td>99.4 - 107.5</td>
+            </tr>
+            <tr>
+                <td>Laryngomalacia</td>
+                <td>99.4 - 107.5</td>
+            </tr>
+            <tr>
+                <td>Cystic Fibrosis</td>
+                <td>99.4 - 107.5</td>
+            </tr>
+            <tr>
+                <td>Epiglottitis</td>
+                <td>99.4 - 103.0</td>
+            </tr>
+            <tr>
+                <td>Heart Disease</td>
+                <td>93.0 - 97.4</td>
+            </tr>
+        </table>
+        <p id="temperatureValue" style="color: aliceblue;font-size: 20px;"> </p>
+        <p id="diagnosedDiseases"></p>
+        <br>
+        <br>
+    </div> 
+    <script>
+        var totalCollections = 0;
+        var diseaseFrequency = {};
+        array = [];
+        var m = 0;
+        // function generateRandomTemperature() {
+        //     return (Math.random() * 5.4) + 98.6;
+        // }
+        // var temperatures = [];
+        // for (var i = 0; i < 50; i++) {
+        //     var temperature = generateRandomTemperature();
+        //     temperature = Math.round(temperature * 10) / 10;
+        //     temperatures.push(temperature);
+        // }
+        // document.getElementById("temperatureList").textContent = "Temperatures: " + temperatures.join(", ");  
+        function fetchData() {
+            var channelID = '2267841';
+            var url = `https://api.thingspeak.com/channels/${channelID}/fields/1/last.json`;
+
+        }
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Check if the value is defined and not null
+                if (data.field1 !== undefined && data.field1 !== null) {
+                    // Extract the latest value from the response
+                    var temperature = parseFloat(data.field1);
+
+                    // Display the temperature on the webpage
+                    document.getElementById("temperatureValue").textContent = `Temperature: ${temperature}°C`;
+
+                    // Check the temperature range and diagnose diseases
+                    var result_set = new Set();
+                    temperature = temperature * 1.8 + 32;
+                    if (103 < temperature <= 107.5) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Laryngomalacia");
+                        result_set.add("Cystic Fibrosis");
+                    }
+                    else if (101.1 < temperature <= 103) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Epiglottitis");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (101 < temperature <= 101.1) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Epiglottitis");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (100.4 < temperature <= 101) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (99.6 < temperature <= 100.4) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                    }
+                    else if (99.4 < temperature <= 99.6) {
+                        result_set.add("COPD");
+                    }
+                    else if (97.4 < temperature <= 99.4) {
+                        print("Our Patient seems quite healthy");
+                    }
+                    else if (93 < temperature <= 97.4) {
+                        result_set.add("Heart Disease");
+                    }
+                    else {
+                        print("Make sure that the person is breathing.");
+                    }
+
+                    // Update disease frequency
+                    result_set.forEach(function (disease) {
+                        diseaseFrequency[disease] = (diseaseFrequency[disease] || 0) + 1;
+                    });
+
+                    totalCollections++;
+
+                    // Display the diagnosed diseases on the webpage
+                    document.getElementById("diagnosedDiseases").textContent = "Diagnosed Diseases: " + Array.from(result_set).join(", ");
+
+                    // After 100 collections, display disease frequency and topmost disease
+                    if (totalCollections > 5) {
+                        displayDiseaseFrequency();
+                    }
+                } else {
+                    // Display an error message if temperature data is unavailable
+                    document.getElementById("temperatureValue").textContent = "Temperature data unavailable";
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+        function displayDiseaseFrequency() {
+            var sortedFrequency = Object.entries(diseaseFrequency).sort((a, b) => b[1] - a[1]);
+            var topDisease = sortedFrequency[0][0];
+            var output = `Topmost Disease: ${topDisease}<br> Disease Frequency:<br>`;
+            sortedFrequency.forEach(([disease, count]) => {
+                output += `${disease}: ${count}<br>`;
+            });
+            document.getElementById("diagnosedDiseases").innerHTML = output;
+        }
+
+        // Fetch data initially when the page loads
+        fetchData();
+
+        // Fetch data every 5 seconds
+        setInterval(fetchData, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+</body>
+
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ThingSpeak Data Display</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #FF5733, #005AA7);
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 45px;
+        }
+
+        #container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            height: 40px;
+        }
+
+        p {
+            color: #333;
+        }
+
+        table {
+            width: 50%;
+            margin: 0 auto; /* Center the table */
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            
+        }
+
+        label:hover {
+            background-color: #45a049;
+        }
+
+        input[type="submit"] {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0077A8;
+        }
+
+        #success-message {
+            color: green;
+            margin-top: 10px;
+            position: relative;
+            top: 50px;
+        }
+        #patientForm {
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        #patientForm h2 {
+            color: #333;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        #patientForm label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        #patientForm input[type="text"],
+        #patientForm select,
+        #patientForm textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #patientForm textarea {
+            resize: vertical;
+        }
+
+        #patientForm input[type="submit"] {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #patientForm input[type="submit"]:hover {
+            background-color: #0077A8;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Classification of disease on the basis of Body Temperature</h1>
+    <div>
+        <center><h2 style="font-size: 40px;">Disease Classification</h2></center>
+        <table>
+            <tr>
+                <th>Disease</th>
+                <th>Temperature Range (°F)</th>
+            </tr>
+            <tr>
+                <td>Bronchitis</td>
+                <td>101.1 - 103.0</td>
+            </tr>
+            <tr>
+                <td>COPD</td>
+                <td>99.4 - 103.0</td>
+            </tr>
+            <tr>
+                <td>Pneumonia</td>
+                <td>99.4 - 107.5</td>
+            </tr>
+            <tr>
+                <td>Laryngomalacia</td>
+                <td>99.4 - 107.5</td>
+            </tr>
+            <tr>
+                <td>Cystic Fibrosis</td>
+                <td>99.4 - 107.5</td>
+            </tr>
+            <tr>
+                <td>Epiglottitis</td>
+                <td>99.4 - 103.0</td>
+            </tr>
+            <tr>
+                <td>Heart Disease</td>
+                <td>93.0 - 97.4</td>
+            </tr>
+        </table>
+        <p id="temperatureValue" style="color: aliceblue; font-size: 20px;"></p>
+        <p id="diagnosedDiseases"></p>
+        <br>
+        <br>
+    </div>
+    <br>
+    <br><br><br><br>
+    <div id="patientForm">
+        <center><h2 style="font-size: 40px;">Patient Details Form</h2></center>
+        <form method="post" action="{{url_for('result')}}" enctype="multipart/form-data">
+            <label for="patientName">Name:</label>
+            <input type="text" id="patientName" name="patientName" required>
+            <br>
+            <label for="patientAge">Age:</label>
+            <input type="text" id="patientAge" name="patientAge" required>
+            <br>
+            <label for="patientGender">Gender:</label>
+            <select id="patientGender" name="patientGender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            <br>
+            <label for="patientMobile">Mobile Number:</label>
+            <input type="text" id="patientMobile" name="patientMobile" required>
+            <br>
+            <label for="patientAddress">Address:</label>
+            <textarea id="patientAddress" name="patientAddress" rows="4" required></textarea>
+            <br>
+            <!-- File Uploader HTML-->
+            <label class="custom-uploader" for="file">Upload Your File</label> <input id="file" accept="audio/wav" name="fileToUpload" type="file" id="uploadForm"/>
+            <input type="submit" value="Submit">
+            
+        </form>
+        {% if filename %}
+            <p>Selected file: {{ filename }}</p>
+            <p>{{ message }}</p>
+            {% if js_download %}
+                <script>
+                    document.getElementById("uploadForm").submit();  // Automatically submit the form to trigger download
+                </script>
+            {% endif %}
+        {% endif %}
+        <script>
+            document.getElementById("myForm").addEventListener("submit", function (event) {
+                event.preventDefault(); // Prevent default form submission
+        
+                // Perform any additional validation or processing if needed
+        
+                // Submit the form using AJAX
+                var formData = new FormData(this);
+        
+                // Perform AJAX submission
+                fetch(this.action, {
+                    method: this.method,
+                    body: formData
+                })
+                .then(response => response.json()) // Assuming the response is in JSON format
+                .then(data => {
+                    // Handle the response data, initiate download, etc.
+                    console.log(data);
+        
+                    // For example, you can initiate download using a dynamic link
+                    var downloadLink = document.createElement("a");
+                    downloadLink.href = data.downloadUrl; // Replace with the actual download URL from the response
+                    downloadLink.download = "downloaded_file.txt"; // Replace with the desired filename
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        </script>
+        
+    </div>
+    <br><br><br><br>
+
+
+
+    <script>
+        var totalCollections = 0;
+        var diseaseFrequency = {};
+        array = [];
+        var m = 0;
+
+        function fetchData() {
+            var channelID = '2267841';
+            var url = `https://api.thingspeak.com/channels/${channelID}/fields/4/last.json`;
+
+        }
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Check if the value is defined and not null
+                if (data.field4 !== undefined && data.field4 !== null) {
+                    // Extract the latest value from the response
+                    var temperature = parseFloat(data.field4);
+
+                    // Display the temperature on the webpage
+                    document.getElementById("temperatureValue").textContent = `Temperature: ${temperature}°C`;
+
+                    // Check the temperature range and diagnose diseases
+                    var result_set = new Set();
+                    temperature = temperature * 1.8 + 32;
+                    if (103 < temperature <= 107.5) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Laryngomalacia");
+                        result_set.add("Cystic Fibrosis");
+                    }
+                    else if (101.1 < temperature <= 103) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Epiglottitis");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (101 < temperature <= 101.1) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Epiglottitis");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (100.4 < temperature <= 101) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                        result_set.add("Pneumonia");
+                        result_set.add("Laryngomalacia");
+                    }
+                    else if (99.6 < temperature <= 100.4) {
+                        result_set.add("Bronchitis");
+                        result_set.add("COPD");
+                    }
+                    else if (99.4 < temperature <= 99.6) {
+                        result_set.add("COPD");
+                    }
+                    else if (97.4 < temperature <= 99.4) {
+                        print("Our Patient seems quite healthy");
+                    }
+                    else if (93 < temperature <= 97.4) {
+                        result_set.add("Heart Disease");
+                    }
+                    else {
+                        print("Make sure that the person is breathing.");
+                    }
+
+
+                    // Update disease frequency
+                    result_set.forEach(function (disease) {
+                            diseaseFrequency[disease] = (diseaseFrequency[disease] || 0) + 1;
+                        });
+
+                        totalCollections++;
+
+                        // Display the diagnosed diseases on the webpage
+                        document.getElementById("diagnosedDiseases").textContent = "Diagnosed Diseases: " + Array.from(result_set).join(", ");
+
+                        // After 100 collections, display disease frequency and topmost disease
+                        if (totalCollections > 5) {
+                            displayDiseaseFrequency();
+                        }
+                    } else {
+                        // Display an error message if temperature data is unavailable
+                        document.getElementById("temperatureValue").textContent = "Temperature data unavailable";
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+
+        function displayDiseaseFrequency() {
+            var sortedFrequency = Object.entries(diseaseFrequency).sort((a, b) => b[1] - a[1]);
+            var topDisease = sortedFrequency[0][0];
+            var output = `Topmost Disease: ${topDisease}<br> Disease Frequency:<br>`;
+            sortedFrequency.forEach(([disease, count]) => {
+                output += `${disease}: ${count}<br>`;
+            });
+            document.getElementById("diagnosedDiseases").innerHTML = output;
+        }
+        fetchData();
+        
+        // Fetch data every 5 seconds
+        setInterval(fetchData, 5000); // 5000 milliseconds = 5 seconds
+        function displayFileName(input) {
+            var fileNameDisplay = document.getElementById("file-name-display");
+            var fileName = input.files[0].name;
+            fileNameDisplay.innerHTML = "Selected file: " + fileName;
+        }
+    </script>
+</body>
+
+</html>
+
+
+<!-- // function fetchData() {
+//     var channelID = '2267841'; // Replace with your ThingSpeak channel ID
+//     var apiKey = 'QG66B54E37LPZ9WZ'; // Replace with your ThingSpeak API key
+//     var url = `https://api.thingspeak.com/channels/${channelID}/fields/1/last.json?api_key=${apiKey}`;
+
+//     fetch(url)
+//         .then(response => response.json())
+//         .then(data => {
+//             // Check if the value is defined and not null
+//             if (data.field1 !== undefined && data.field1 !== null) {
+//                 // Extract the latest value from the response
+//                 var temperature = parseFloat(data.field1);
+
+//                 // Display the temperature on the webpage
+//                 document.getElementById("temperatureValue").textContent = `Temperature: ${temperature}°C`;
+
+//                 // Check the temperature range and diagnose diseases
+//                 var result_set = new Set();
+//                 temperature = temperature * 1.8 + 32;
+//                 if (103 < temperature <= 107.5) {
+//                     result_set.add("Bronchitis");
+//                     result_set.add("COPD");
+//                     result_set.add("Pneumonia");
+//                     result_set.add("Laryngomalacia");
+//                     result_set.add("Cystic Fibrosis");
+//                 }
+//                 else if (101.1 < temperature <= 103) {
+//                     result_set.add("Bronchitis");
+//                     result_set.add("COPD");
+//                     result_set.add("Pneumonia");
+//                     result_set.add("Epiglottitis");
+//                     result_set.add("Laryngomalacia");
+//                 }
+//                 else if (101 < temperature <= 101.1) {
+    //                     result_set.add("Bronchitis");
+    //                     result_set.add("COPD");
+//                     result_set.add("Pneumonia");
+//                     result_set.add("Epiglottitis");
+//                     result_set.add("Laryngomalacia");
+//                 }
+//                 else if (100.4 < temperature <= 101) {
+//                     result_set.add("Bronchitis");
+//                     result_set.add("COPD");
+//                     result_set.add("Pneumonia");
+//                     result_set.add("Laryngomalacia");
+//                 }
+//                 else if (99.6 < temperature <= 100.4) {
+//                     result_set.add("Bronchitis");
+//                     result_set.add("COPD");
+//                 }
+//                 else if (99.4 < temperature <= 99.6) {
+//                     result_set.add("COPD");
+//                 }
+//                 else if (97.4 < temperature <= 99.4) {
+//                     console.log("Our Patient seems quite healthy");
+//                 }
+//                 else if (93 < temperature <= 97.4) {
+//                     result_set.add("Heart Disease");
+//                 }
+//                 else {
+//                     console.log("Make sure that the person is breathing.");
+//                 } -->

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spectrogram Images</title>
+</head>
+<body>
+    <h1>Spectrogram Images</h1>
+    <h2>Input File Spectrogram:</h2>
+    <img src="{{ input_image }}" alt="Input Spectrogram">
+    
+    <h2>Output File Spectrogram:</h2>
+    <img src="{{ output_image }}" alt="Output Spectrogram">
+    <form action="{{ url_for('result') }}" method="get">
+        <button type="submit">Go to Result Page</button>
+    </form>
+</body>
+</html>

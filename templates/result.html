@@ -1,0 +1,209 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+</head>
+<body>
+    <div>
+        <h2>Patient Details</h2>
+        <p>Name: {{ patient_name }}</p>
+        <p>Age: {{ patient_age }}</p>
+        <p>Gender: {{ patient_gender }}</p>
+        <p>Mobile Number: {{ patient_mobile }}</p>
+        <p>Address: {{ patient_address }}</p>
+    </div>
+    <center><h1>Results on Denoising and Filtering</h1></center>
+    <img src="{{ input_image }}" >
+    <!-- Display the input audio file -->
+    <!-- <p> Audio file path: {{ input_audio_file_path }} </p>
+    <audio controls>
+        <source src="{{ input_audio_file_path }}" type="audio/wav">
+        Your browser does not support the audio tag.
+    </audio>
+    <img src="{{ output_image }}" >
+    <!-- Display the output audio file -->
+    <!-- <audio controls>
+        <source src="../static//output.wav" type="audio/wav">
+        Your browser does not support the audio tag.
+    </audio>
+
+
+    
+    <form action="{{ url_for('home') }}" method="get">
+        <button type="submit">Go to Home Page</button>
+    </form>
+</body>
+</html> --> --> -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+
+        div {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        h1 {
+            color: #008080;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        audio {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005757;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Patient Details</h2>
+        <p>Name: {{ patient_name }}</p>
+        <p>Age: {{ patient_age }}</p>
+        <p>Gender: {{ patient_gender }}</p>
+        <p>Mobile Number: {{ patient_mobile }}</p>
+        <p>Address: {{ patient_address }}</p>
+    </div>
+    <center><h1>Results on Denoising and Filtering</h1></center>
+    <img src="{{ input_image }}" >
+    <!-- Display the input audio file -->
+    <!-- <p> Audio file path: {{ input_audio_file_path }} </p>
+    <audio controls>
+        <source src="{{ input_audio_file_path }}" type="audio/wav">
+        Your browser does not support the audio tag.
+    </audio>
+    <img src="{{ output_image }}" >
+    <!-- Display the output audio file -->
+    <!-- <p> output.wav</p>
+    <audio controls>
+        <source src="../static//output.wav" type="audio/wav">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <form action="{{ url_for('home') }}" method="get">
+        <button type="submit">Go to Home Page</button>
+    </form>
+</body>
+</html> --> --> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background: linear-gradient(to right, #FF5733, #005AA7);
+
+        }
+
+        div {
+            background-color: #ffffff; /* White background for div containers */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #004d40; /* Dark greenish text color */
+        }
+
+        h1 {
+            color: rgb(42, 61, 61);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        audio {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #1f2c2c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005757;
+        }
+    </style>
+</head>
+<body style="text-align: center;">
+    <center><div style="width: 500px;">
+        <center><h2 style="font-size: 30px;">Patient Details</h2></center>
+        <p>Name: {{ patient_name }}</p>
+        <p>Age: {{ patient_age }}</p>
+        <p>Gender: {{ patient_gender }}</p>
+        <p>Mobile Number: {{ patient_mobile }}</p>
+        <p>Address: {{ patient_address }}</p>
+    </div></center>
+    <center><h1 style="color: antiquewhite;">Results on Denoising and Filtering</h1></center>
+    <img src="{{ input_image }}" >
+    <!-- Display the input audio file -->
+    <p style="color: antiquewhite;"> Audio file path: {{ input_audio_file_path }} </p>
+    <audio controls>
+        <source src="{{ input_audio_file_path }}" type="audio/wav">
+        Your browser does not support the audio tag.
+    </audio>
+    <img src="{{ output_image }}" >
+    <!-- Display the output audio file -->
+    <p style="color: antiquewhite;"> output.wav</p>
+    <audio controls>
+        <source src="../static//output.wav" type="audio/wav">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <form action="{{ url_for('home') }}" method="get">
+        <button type="submit">Go to Home Page</button>
+    </form>
+</body>
+</html>
+
